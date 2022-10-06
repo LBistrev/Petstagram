@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'petstagram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'petstagram_db',
-        'USER': 'postgres',
-        'PASSWORD': '0123AsD',
-        'HOST': '127.0.0.1',
+        'NAME': 'dbbdaipru17jil',
+        'USER': 'jrcobyixqmhegh',
+        'PASSWORD': '9105875449ba9ce587749a614c3c8344f85bb8ae807852016fd7178f8a6beb48',
+        'HOST': 'ec2-54-75-184-144.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
