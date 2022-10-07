@@ -13,26 +13,18 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from petstagram.utils import is_production
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'optional_value')
-# SECRET_KEY = 'django-insecure-c0nvv8913er=p1xapad4mp^!3jcgjh$^7dg=q0%e^=ize1+ql$'
-
-# SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(";")
-#     [
-#     'localhost',
-#     '127.0.0.1',
-#     'petstagram-06-10-22.herokuapp.com',
-# ]
-
 
 # Application definition
 DJANGO_APPS = (
@@ -88,55 +80,52 @@ WSGI_APPLICATION = 'petstagram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT')
-DATABASES = None
-if APP_ENVIRONMENT == 'Production':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'dbbdaipru17jil',
-            'USER': 'jrcobyixqmhegh',
-            'PASSWORD': '9105875449ba9ce587749a614c3c8344f85bb8ae807852016fd7178f8a6beb48',
-            'HOST': 'ec2-54-75-184-144.eu-west-1.compute.amazonaws.com',
-            'PORT': '5432',
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'petstagram_db',
-            'USER': 'postgres',
-            'PASSWORD': '0123AsD',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
+APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', 'Development')
+
+DEFAULT_DATABASE_CONFING = {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': 'petstagram_db',
+    'USER': 'postgres',
+    'PASSWORD': '0123AsD',
+    'HOST': '127.0.0.1',
+    'PORT': '5432',
+}
+
+if is_production():
+    DEFAULT_DATABASE_CONFING = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT', '5432'),  # if no .env variable DB_PORT, return '5432'
     }
 
-
-print(DATABASES)
-print(SECRET_KEY)
-print(ALLOWED_HOSTS)
-print(DEBUG)
-
+DATABASES = {
+    'default': DEFAULT_DATABASE_CONFING,
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+AUTH_PASSWORD_VALIDATORS = []
+
+if is_production():
+    AUTH_PASSWORD_VALIDATORS.extend([
+        {
+            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        },
+
+    ])
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -176,3 +165,25 @@ MEDIA_ROOT = BASE_DIR / 'mediafiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.PetstagramUser'
+
+LOGGING_LEVEL = 'DEBUG'
+if is_production():
+    LOGGING_LEVEL = 'INFO'
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            # level could be: DEBUG, WARNING, INFO, CRITICAL
+            'level': LOGGING_LEVEL,
+            'filters': [],
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': LOGGING_LEVEL,
+            'handlers': ['console'],
+        }
+    }
+}
