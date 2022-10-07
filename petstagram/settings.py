@@ -20,11 +20,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', '')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(";")
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(";")
 
 # Application definition
 DJANGO_APPS = (
@@ -84,22 +84,12 @@ APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', 'Development')
 
 DEFAULT_DATABASE_CONFING = {
     'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'petstagram_db',
-    'USER': 'postgres',
-    'PASSWORD': '0123AsD',
-    'HOST': '127.0.0.1',
-    'PORT': '5432',
+    'NAME': os.getenv('DB_NAME', 'petstagram_db'),
+    'USER': os.getenv('DB_USER', 'postgres'),
+    'PASSWORD': os.getenv('DB_PASSWORD', '0123AsD'),
+    'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+    'PORT': os.getenv('DB_PORT', '5432'),  # if no .env variable DB_PORT, return '5432'
 }
-
-if is_production():
-    DEFAULT_DATABASE_CONFING = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT', '5432'),  # if no .env variable DB_PORT, return '5432'
-    }
 
 DATABASES = {
     'default': DEFAULT_DATABASE_CONFING,
