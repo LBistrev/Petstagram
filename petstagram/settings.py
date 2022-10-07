@@ -161,19 +161,19 @@ if is_production():
     LOGGING_LEVEL = 'INFO'
 
 LOGGING = {
-    'version': 1,
-    'handlers': {
-        'console': {
-            # level could be: DEBUG, WARNING, INFO, CRITICAL
-            'level': LOGGING_LEVEL,
-            'filters': [],
-            'class': 'logging.StreamHandler',
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': LOGGING_LEVEL,
-            'handlers': ['console'],
-        }
-    }
+    # 'version': 1,
+    # 'handlers': {
+    #     'console': {
+    #         # level could be: DEBUG, WARNING, INFO, CRITICAL
+    #         'level': LOGGING_LEVEL,
+    #         'filters': [],
+    #         'class': 'logging.StreamHandler',
+    #     }
+    # },
+    # 'loggers': {
+    #     'django.db.backends': {
+    #         'level': LOGGING_LEVEL,
+    #         'handlers': ['console'],
+    #     }
+    # }
 }
