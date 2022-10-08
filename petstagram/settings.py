@@ -90,7 +90,7 @@ DEFAULT_DATABASE_CONFIG = {
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
-    
+
 if is_production():
     DEFAULT_DATABASE_CONFIG = {
         'ENGINE': 'django.db.backends.postgresql',
@@ -112,18 +112,18 @@ AUTH_PASSWORD_VALIDATORS = []
 
 if is_production():
     AUTH_PASSWORD_VALIDATORS.extend([
-        # {
-        #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-        # },
-        # {
-        #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        # },
-        # {
-        #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-        # },
-        # {
-        #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-        # },
+        {
+            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        },
 
     ])
 
@@ -166,24 +166,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.PetstagramUser'
 
-LOGGING_LEVEL = 'DEBUG'
-if is_production():
-    LOGGING_LEVEL = 'INFO'
+# LOGGING_LEVEL = 'DEBUG'
+# if is_production():
+#     LOGGING_LEVEL = 'INFO'
 
-LOGGING = {
-    'version': 1,
-    'handlers': {
-        'console': {
-            # level could be: DEBUG, WARNING, INFO, CRITICAL
-            'level': LOGGING_LEVEL,
-            'filters': [],
-            'class': 'logging.StreamHandler',
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': LOGGING_LEVEL,
-            'handlers': ['console'],
-        }
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'handlers': {
+#         'console': {
+#             # level could be: DEBUG, WARNING, INFO, CRITICAL
+#             'level': LOGGING_LEVEL,
+#             'filters': [],
+#             'class': 'logging.StreamHandler',
+#         }
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'level': LOGGING_LEVEL,
+#             'handlers': ['console'],
+#         }
+#     }
+# }
