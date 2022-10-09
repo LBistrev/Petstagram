@@ -58,12 +58,10 @@ class Pet(models.Model):
 class PetPhoto(models.Model):
     IMAGE_MAX_SIZE_VALUE_IN_MB = 5
 
-    photo = cloudinary_models.CloudinaryField(
-        'image',
-        validators=(
-            ImageMaxSizeValidatorInMb(IMAGE_MAX_SIZE_VALUE_IN_MB),
-        ),
-    )
+    photo = cloudinary_models.CloudinaryField('image')
+    # validators = (
+    #     ImageMaxSizeValidatorInMb(IMAGE_MAX_SIZE_VALUE_IN_MB),
+    # ),
 
     tagged_pets = models.ManyToManyField(
         Pet,
