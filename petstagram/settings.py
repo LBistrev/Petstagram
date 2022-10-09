@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import cloudinary
+
 from petstagram.utils import is_production
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,15 +84,14 @@ WSGI_APPLICATION = 'petstagram.wsgi.application'
 
 APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', 'Development')
 
-
 DEFAULT_DATABASE_CONFIG = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-        'PORT': os.getenv('DB_PORT', '5432'),  # if no .env variable DB_PORT, return '5432'
-        'NAME': os.getenv('DB_NAME', 'petstagram_db'),
-        'USER': os.getenv('DB_USER', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASSWORD', '0123AsD'),
-    }
+    'ENGINE': 'django.db.backends.postgresql',
+    'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+    'PORT': os.getenv('DB_PORT', '5432'),  # if no .env variable DB_PORT, return '5432'
+    'NAME': os.getenv('DB_NAME', 'petstagram_db'),
+    'USER': os.getenv('DB_USER', 'postgres'),
+    'PASSWORD': os.getenv('DB_PASSWORD', '0123AsD'),
+}
 
 DATABASES = {
     'default': DEFAULT_DATABASE_CONFIG,
@@ -179,3 +180,9 @@ LOGGING = {
         }
     }
 }
+
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME', None),
+    api_key=os.getenv('CLOUDINARY_API_KEY', None),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET', None),
+)

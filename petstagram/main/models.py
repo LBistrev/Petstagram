@@ -1,5 +1,6 @@
 import datetime
 
+from cloudinary import models as cloudinary_models
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -57,7 +58,8 @@ class Pet(models.Model):
 class PetPhoto(models.Model):
     IMAGE_MAX_SIZE_VALUE_IN_MB = 5
 
-    photo = models.ImageField(
+    photo = cloudinary_models.CloudinaryField(
+        'image',
         validators=(
             ImageMaxSizeValidatorInMb(IMAGE_MAX_SIZE_VALUE_IN_MB),
         ),
