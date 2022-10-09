@@ -24,7 +24,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', '')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(';')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(';')
 
 # Application definition
 DJANGO_APPS = (
@@ -82,23 +82,14 @@ WSGI_APPLICATION = 'petstagram.wsgi.application'
 
 APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', 'Development')
 
+
 DEFAULT_DATABASE_CONFIG = {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'petstagram_db',
-        'USER': 'postgres',
-        'PASSWORD': '0123AsD',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-
-if is_production():
-    DEFAULT_DATABASE_CONFIG = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.getenv('DB_HOST'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
         'PORT': os.getenv('DB_PORT', '5432'),  # if no .env variable DB_PORT, return '5432'
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'NAME': os.getenv('DB_NAME', 'petstagram_db'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '0123AsD'),
     }
 
 DATABASES = {
