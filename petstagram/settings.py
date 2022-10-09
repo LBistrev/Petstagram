@@ -24,7 +24,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', '')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(";")
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(';')
 
 # Application definition
 DJANGO_APPS = (
@@ -95,7 +95,7 @@ if is_production():
     DEFAULT_DATABASE_CONFIG = {
         'ENGINE': 'django.db.backends.postgresql',
         'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),  # if no .env variable DB_PORT, return '5432'
+        'PORT': os.getenv('DB_PORT', '5432'),  # if no .env variable DB_PORT, return '5432'
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
@@ -166,24 +166,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.PetstagramUser'
 
-# LOGGING_LEVEL = 'DEBUG'
-# if is_production():
-#     LOGGING_LEVEL = 'INFO'
+LOGGING_LEVEL = 'DEBUG'
 
-# LOGGING = {
-#     'version': 1,
-#     'handlers': {
-#         'console': {
-#             # level could be: DEBUG, WARNING, INFO, CRITICAL
-#             'level': LOGGING_LEVEL,
-#             'filters': [],
-#             'class': 'logging.StreamHandler',
-#         }
-#     },
-#     'loggers': {
-#         'django.db.backends': {
-#             'level': LOGGING_LEVEL,
-#             'handlers': ['console'],
-#         }
-#     }
-# }
+if is_production():
+    LOGGING_LEVEL = 'INFO'
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            # level could be: DEBUG, WARNING, INFO, CRITICAL
+            'level': LOGGING_LEVEL,
+            'filters': [],
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': LOGGING_LEVEL,
+            'handlers': ['console'],
+        }
+    }
+}
