@@ -71,7 +71,6 @@ class CreatePetPhotoView(auth_mixins.LoginRequiredMixin, views.CreateView):
 class EditPetPhotoView(views.UpdateView):
     model = PetPhoto
     template_name = 'main/photo_edit.html'
-    fields = ('description',)
     form_class = EditPetPhotoForm
 
     def get_success_url(self):
