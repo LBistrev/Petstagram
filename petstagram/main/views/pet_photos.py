@@ -27,6 +27,14 @@ class PetPhotoDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
     model = PetPhoto
     template_name = 'main/photo_details.html'
     context_object_name = 'pet_photo'
+    
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+
+        viewed_pet_photos = request.session.get('last_viewed_pet_photo_ids', [])
+        viewed_pet_photos.insert(0, self.kwargs['pk'])
+        request.session['last_viewed_pet_photo_ids'] = viewed_pet_photos[:4]
+        return response
 
     def get_queryset(self):
         return super().get_queryset().prefetch_related('tagged_pets')
@@ -44,15 +52,6 @@ class PetPhotoDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
 #     }
 #
 #     return render(request, 'photo_details.html', context)
-
-
-def like_pet_photo(pk):
-    pet_photo = PetPhoto.objects.get(pk=pk)
-    pet_photo.likes += 1
-    pet_photo.save()
-
-    return redirect('pet photo details', pk)
-
 
 # def create_pet_photo(request):
 #     return pet_photo_action(request, CreatePetPhotoForm, 'dashboard', PetPhoto(), 'photo_create.html')
@@ -72,10 +71,20 @@ class CreatePetPhotoView(auth_mixins.LoginRequiredMixin, views.CreateView):
 class EditPetPhotoView(views.UpdateView):
     model = PetPhoto
     template_name = 'main/photo_edit.html'
+    fields = ('description',)
     form_class = EditPetPhotoForm
 
     def get_success_url(self):
         return reverse_lazy('pet photo details', kwargs={'pk': self.object.id})
 
+
 # def edit_pet_photo(request, pk):
-#     return pet_photo_action(request, EditPetPhotoForm, 'show profile', PetPhoto.objects.get(pk=pk), 'main/photo_edit.htm')
+#     return pet_photo_action(request, EditPetPhotoForm, 'show profile',
+#     PetPhoto.objects.get(pk=pk), 'main/photo_edit.htm')
+
+def like_pet_photo(request, pk):
+    pet_photo = PetPhoto.objects.get(pk=pk)
+    pet_photo.likes += 1
+    pet_photo.save()
+
+    return redirect('pet photo details', pk)
