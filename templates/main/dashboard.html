@@ -22,7 +22,7 @@
                                     {{ pet.age }}
                                 {% endif %}</h5>
                             {% endfor %}
-                            {% if pet_photo.desription %}
+                            {% if pet_photo.description %}
                                 <p class="card-text">{{ pet_photo.description|truncatechars:30 }}</p>
                             {% endif %}
                             <a href="{% url 'pet photo details' pet_photo.pk %}" class="btn btn-primary">See details</a>
